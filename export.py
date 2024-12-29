@@ -23,7 +23,7 @@ def show_export_options(df, data):
         with col2:
             export_excel(df, "orcamento")
         with col3:
-            export_pdf(df, "orcamento")
+            export_pdf(df, "orcamento", is_salary=False)
     
     with tab2:
         df_salarios = create_salary_df(data)
@@ -33,7 +33,7 @@ def show_export_options(df, data):
         with col2:
             export_excel(df_salarios, "salarios")
         with col3:
-            export_pdf(df_salarios, "salarios")
+            export_pdf(df_salarios, "salarios", is_salary=True)
 
 def export_csv(df, prefix):
     csv = df.to_csv(index=False).encode('utf-8')
@@ -59,8 +59,8 @@ def export_excel(df, prefix):
         help="Clique para baixar os dados em formato Excel"
     )
 
-def export_pdf(df, prefix):
-    pdf_file = create_pdf(df)
+def export_pdf(df, prefix, is_salary=False):
+    pdf_file = create_pdf(df, is_salary)
     with open(pdf_file, "rb") as pdf:
         st.download_button(
             label="📥 Download PDF",
@@ -70,7 +70,7 @@ def export_pdf(df, prefix):
             help="Clique para baixar os dados em formato PDF"
         ) 
 
-def create_pdf(df):
+def create_pdf(df, is_salary=False):
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
         doc = SimpleDocTemplate(
             tmp_file.name,
@@ -86,25 +86,34 @@ def create_pdf(df):
         title_style = styles['Title']
         title_style.textColor = HexColor('#2c3e50')
         title_style.fontSize = 24
-        elements.append(Paragraph('Orçamento Escolar MDC', title_style))
+        
+        title = 'Relatório de Salários' if is_salary else 'Orçamento Escolar MDC'
+        elements.append(Paragraph(title, title_style))
         elements.append(Spacer(1, 30))
         
-        # Formatar números
+        # Formatar números baseado no tipo de relatório
         df_formatted = df.copy()
-        df_formatted['Custo Unitário (R$)'] = df_formatted['Custo Unitário (R$)'].apply(lambda x: f'R$ {x:,.2f}')
-        df_formatted['Valor Unitário Final (R$)'] = df_formatted['Valor Unitário Final (R$)'].apply(lambda x: f'R$ {x:,.2f}')
-        df_formatted['Custo Mensal Total (R$)'] = df_formatted['Custo Mensal Total (R$)'].apply(lambda x: f'R$ {x:,.2f}')
-        df_formatted['Margem de Lucro (%)'] = df_formatted['Margem de Lucro (%)'].apply(lambda x: f'{x}%')
+        if is_salary:
+            for col in df_formatted.columns:
+                if "R$" in col:
+                    df_formatted[col] = df_formatted[col].apply(lambda x: f'R$ {x:,.2f}')
+        else:
+            df_formatted['Custo Unitário (R$)'] = df_formatted['Custo Unitário (R$)'].apply(lambda x: f'R$ {x:,.2f}')
+            df_formatted['Valor Unitário Final (R$)'] = df_formatted['Valor Unitário Final (R$)'].apply(lambda x: f'R$ {x:,.2f}')
+            df_formatted['Custo Mensal Total (R$)'] = df_formatted['Custo Mensal Total (R$)'].apply(lambda x: f'R$ {x:,.2f}')
+            df_formatted['Margem de Lucro (%)'] = df_formatted['Margem de Lucro (%)'].apply(lambda x: f'{x}%')
         
         data = [df_formatted.columns.tolist()] + df_formatted.values.tolist()
         
-        # Larguras ajustadas para A4 paisagem
-        col_widths = [200, 120, 120, 120, 140, 140]
+        # Ajustar larguras baseado no tipo de relatório
+        col_widths = [120] * len(df_formatted.columns)  # Largura padrão
+        if not is_salary:
+            col_widths = [200, 120, 120, 120, 140, 140]
+        
         table = Table(data, colWidths=col_widths, repeatRows=1)
         
-        # Estilo da tabela melhorado
+        # Resto do código de estilo da tabela permanece igual
         table.setStyle(TableStyle([
-            # Cabeçalho
             ('BACKGROUND', (0, 0), (-1, 0), HexColor('#2c3e50')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
             ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
@@ -112,8 +121,6 @@ def create_pdf(df):
             ('FONTSIZE', (0, 0), (-1, 0), 11),
             ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
             ('TOPPADDING', (0, 0), (-1, 0), 12),
-            
-            # Corpo da tabela
             ('BACKGROUND', (0, 1), (-1, -1), colors.white),
             ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
             ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
@@ -121,34 +128,12 @@ def create_pdf(df):
             ('FONTSIZE', (0, 1), (-1, -1), 10),
             ('TOPPADDING', (0, 1), (-1, -1), 8),
             ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
-            
-            # Linhas zebradas
             *[('BACKGROUND', (0, i), (-1, i), HexColor('#f5f6fa')) for i in range(2, len(data), 2)],
-            
-            # Bordas
             ('GRID', (0, 0), (-1, -1), 0.5, HexColor('#bdc3c7')),
-            
-            # Alinhamentos específicos
-            ('ALIGN', (0, 0), (0, -1), 'LEFT'),  # Primeira coluna à esquerda
-            ('ALIGN', (1, 1), (-1, -1), 'RIGHT'),  # Valores numéricos à direita
+            ('ALIGN', (0, 0), (0, -1), 'LEFT'),
+            ('ALIGN', (1, 1), (-1, -1), 'RIGHT'),
         ]))
         
         elements.append(table)
-        
-        # Adiciona data de geração no horário de Brasília
-        data_style = styles['Normal']
-        data_style.textColor = HexColor('#7f8c8d')
-        data_style.fontSize = 8
-        elements.append(Spacer(1, 20))
-        
-        # Configurando horário de Brasília
-        fuso_brasil = pytz.timezone('America/Sao_Paulo')
-        data_hora_brasil = datetime.now(fuso_brasil)
-        
-        elements.append(Paragraph(
-            f'Gerado em: {data_hora_brasil.strftime("%d/%m/%Y %H:%M")}',
-            data_style
-        ))
-        
         doc.build(elements)
         return tmp_file.name 
