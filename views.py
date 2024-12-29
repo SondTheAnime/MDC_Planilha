@@ -202,15 +202,15 @@ def create_salary_df(data):
     
     impostos = data["salarios"]["impostos"]
     
-    # Calculando cada encargo separadamente
-    df_salarios["INSS (R$)"] = df_salarios["Salário Base (R$)"] * impostos["inss"]
-    df_salarios["FGTS (R$)"] = df_salarios["Salário Base (R$)"] * impostos["fgts"]
-    df_salarios["Acidente (R$)"] = df_salarios["Salário Base (R$)"] * impostos["acidente"]
-    df_salarios["Educação (R$)"] = df_salarios["Salário Base (R$)"] * impostos["educacao"]
-    df_salarios["DSR (R$)"] = df_salarios["Salário Base (R$)"] * impostos["dsr"]
-    df_salarios["13º (R$)"] = df_salarios["Salário Base (R$)"] * impostos["decimo"]
-    df_salarios["Sistema S (R$)"] = df_salarios["Salário Base (R$)"] * impostos["sistema_s"]
-    df_salarios["Férias (R$)"] = df_salarios["Salário Base (R$)"] * impostos["ferias"]
+    # Calculando cada encargo separadamente usando .get()
+    df_salarios["INSS (R$)"] = df_salarios["Salário Base (R$)"] * impostos.get("inss", 0)
+    df_salarios["FGTS (R$)"] = df_salarios["Salário Base (R$)"] * impostos.get("fgts", 0)
+    df_salarios["Acidente (R$)"] = df_salarios["Salário Base (R$)"] * impostos.get("acidente", 0)
+    df_salarios["Educação (R$)"] = df_salarios["Salário Base (R$)"] * impostos.get("educacao", 0)
+    df_salarios["DSR (R$)"] = df_salarios["Salário Base (R$)"] * impostos.get("dsr", 0)
+    df_salarios["13º (R$)"] = df_salarios["Salário Base (R$)"] * impostos.get("decimo", 0)
+    df_salarios["Sistema S (R$)"] = df_salarios["Salário Base (R$)"] * impostos.get("sistema_s", 0)
+    df_salarios["Férias (R$)"] = df_salarios["Salário Base (R$)"] * impostos.get("ferias", 0)
     
     # Total de encargos por funcionário
     df_salarios["Total Encargos (R$)"] = (
