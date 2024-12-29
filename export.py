@@ -3,11 +3,12 @@ import pandas as pd
 import io
 from datetime import datetime
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter, landscape, A4
+from reportlab.lib.pagesizes import landscape, A4
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 import tempfile
 from reportlab.lib.colors import HexColor
+import pytz
 
 def show_export_options(df):
     st.subheader("Exportar Dados")
@@ -120,13 +121,18 @@ def create_pdf(df):
         
         elements.append(table)
         
-        # Adiciona data de geração
+        # Adiciona data de geração no horário de Brasília
         data_style = styles['Normal']
         data_style.textColor = HexColor('#7f8c8d')
         data_style.fontSize = 8
         elements.append(Spacer(1, 20))
+        
+        # Configurando horário de Brasília
+        fuso_brasil = pytz.timezone('America/Sao_Paulo')
+        data_hora_brasil = datetime.now(fuso_brasil)
+        
         elements.append(Paragraph(
-            f'Gerado em: {datetime.now().strftime("%d/%m/%Y %H:%M")}',
+            f'Gerado em: {data_hora_brasil.strftime("%d/%m/%Y %H:%M")}',
             data_style
         ))
         
