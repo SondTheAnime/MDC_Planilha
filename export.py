@@ -72,26 +72,28 @@ def export_pdf(df, prefix, is_salary=False):
 
 def create_pdf(df, is_salary=False):
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
+        # Configuração do documento com margens mínimas
         doc = SimpleDocTemplate(
             tmp_file.name,
             pagesize=landscape(A4),
-            rightMargin=50,
-            leftMargin=50,
-            topMargin=40,
-            bottomMargin=30
+            rightMargin=10,   # Margem mínima
+            leftMargin=10,    # Margem mínima
+            topMargin=30,     # Reduzida
+            bottomMargin=20   # Reduzida
         )
         elements = []
         
+        # Título mais compacto
         styles = getSampleStyleSheet()
         title_style = styles['Title']
         title_style.textColor = HexColor('#2c3e50')
-        title_style.fontSize = 24
+        title_style.fontSize = 20  # Fonte menor
         
         title = 'Relatório de Salários' if is_salary else 'Orçamento Escolar MDC'
         elements.append(Paragraph(title, title_style))
-        elements.append(Spacer(1, 30))
+        elements.append(Spacer(1, 20))  # Espaço reduzido
         
-        # Formatar números baseado no tipo de relatório
+        # Formatar números
         df_formatted = df.copy()
         if is_salary:
             for col in df_formatted.columns:
@@ -105,20 +107,22 @@ def create_pdf(df, is_salary=False):
         
         data = [df_formatted.columns.tolist()] + df_formatted.values.tolist()
         
-        # Ajustar larguras baseado no tipo de relatório
+        # Larguras ainda mais compactas para o relatório de salários
         if is_salary:
             col_widths = [
-                100,   # Cargo
-                100,   # Salário Base
-                85,   # Quantidade
-                75,   # INSS
-                75,   # FGTS
-                75,   # IRPF
-                100,   # 13º
-                120,   # Total Encargos
-                120,   # Custo por Funcionário
-                120    # Custo Total Mensal
+                80,   # Cargo
+                75,   # Salário Base
+                50,   # Quantidade
+                65,   # INSS
+                65,   # FGTS
+                65,   # IRPF
+                65,   # 13º
+                80,   # Total Encargos
+                80,   # Custo por Funcionário
+                80    # Custo Total Mensal
             ]
+            # Fonte menor para a tabela de salários
+            font_size = 9
         else:
             col_widths = [
                 200,  # Descrição do Item
@@ -128,25 +132,26 @@ def create_pdf(df, is_salary=False):
                 140,  # Valor Unitário Final
                 140   # Custo Mensal Total
             ]
+            font_size = 10
         
         table = Table(data, colWidths=col_widths, repeatRows=1)
         
-        # Resto do código de estilo da tabela permanece igual
+        # Estilo da tabela com fonte menor para salários
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), HexColor('#2c3e50')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
             ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 11),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-            ('TOPPADDING', (0, 0), (-1, 0), 12),
+            ('FONTSIZE', (0, 0), (-1, 0), font_size + 1),  # Cabeçalho um pouco maior
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+            ('TOPPADDING', (0, 0), (-1, 0), 8),
             ('BACKGROUND', (0, 1), (-1, -1), colors.white),
             ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
             ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 1), (-1, -1), 10),
-            ('TOPPADDING', (0, 1), (-1, -1), 8),
-            ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
+            ('FONTSIZE', (0, 1), (-1, -1), font_size),  # Fonte menor no corpo
+            ('TOPPADDING', (0, 1), (-1, -1), 6),
+            ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
             *[('BACKGROUND', (0, i), (-1, i), HexColor('#f5f6fa')) for i in range(2, len(data), 2)],
             ('GRID', (0, 0), (-1, -1), 0.5, HexColor('#bdc3c7')),
             ('ALIGN', (0, 0), (0, -1), 'LEFT'),
