@@ -72,30 +72,41 @@ def export_pdf(df, prefix, is_salary=False):
 
 def create_pdf(df, is_salary=False):
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
-        # Configuração do documento com margens mínimas
         doc = SimpleDocTemplate(
             tmp_file.name,
             pagesize=landscape(A4),
-            rightMargin=10,   # Margem mínima
-            leftMargin=10,    # Margem mínima
-            topMargin=30,     # Reduzida
-            bottomMargin=20   # Reduzida
+            rightMargin=10,
+            leftMargin=10,
+            topMargin=30,
+            bottomMargin=20
         )
         elements = []
         
-        # Título mais compacto
         styles = getSampleStyleSheet()
         title_style = styles['Title']
         title_style.textColor = HexColor('#2c3e50')
-        title_style.fontSize = 20  # Fonte menor
+        title_style.fontSize = 20
         
         title = 'Relatório de Salários' if is_salary else 'Orçamento Escolar MDC'
         elements.append(Paragraph(title, title_style))
-        elements.append(Spacer(1, 20))  # Espaço reduzido
+        elements.append(Spacer(1, 20))
         
-        # Formatar números
+        # Formatar números e ajustar cabeçalhos
         df_formatted = df.copy()
         if is_salary:
+            # Renomear colunas com quebras de linha
+            df_formatted.columns = [
+                'Cargo',
+                'Salário\nBase (R$)',
+                'Qtd.',
+                'INSS\n(R$)',
+                'FGTS\n(R$)',
+                'IRPF\n(R$)',
+                'Provisão\n13º (R$)',
+                'Total\nEncargos (R$)',
+                'Custo por\nFuncionário (R$)',
+                'Custo Total\nMensal (R$)'
+            ]
             for col in df_formatted.columns:
                 if "R$" in col:
                     df_formatted[col] = df_formatted[col].apply(lambda x: f'R$ {x:,.2f}')
@@ -107,22 +118,21 @@ def create_pdf(df, is_salary=False):
         
         data = [df_formatted.columns.tolist()] + df_formatted.values.tolist()
         
-        # Larguras ainda mais compactas para o relatório de salários
         if is_salary:
             col_widths = [
-                80,   # Cargo
+                85,   # Cargo
                 75,   # Salário Base
-                50,   # Quantidade
-                65,   # INSS
-                65,   # FGTS
-                65,   # IRPF
-                65,   # 13º
-                80,   # Total Encargos
-                80,   # Custo por Funcionário
-                80    # Custo Total Mensal
+                40,   # Quantidade
+                60,   # INSS
+                60,   # FGTS
+                60,   # IRPF
+                70,   # 13º
+                75,   # Total Encargos
+                85,   # Custo por Funcionário
+                85    # Custo Total Mensal
             ]
-            # Fonte menor para a tabela de salários
             font_size = 9
+            header_height = 30  # Altura maior para cabeçalhos com quebra de linha
         else:
             col_widths = [
                 200,  # Descrição do Item
@@ -133,23 +143,23 @@ def create_pdf(df, is_salary=False):
                 140   # Custo Mensal Total
             ]
             font_size = 10
+            header_height = 20
         
         table = Table(data, colWidths=col_widths, repeatRows=1)
         
-        # Estilo da tabela com fonte menor para salários
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), HexColor('#2c3e50')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
             ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), font_size + 1),  # Cabeçalho um pouco maior
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
-            ('TOPPADDING', (0, 0), (-1, 0), 8),
+            ('FONTSIZE', (0, 0), (-1, 0), font_size + 1),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), header_height/2),  # Ajuste do padding do cabeçalho
+            ('TOPPADDING', (0, 0), (-1, 0), header_height/2),     # Ajuste do padding do cabeçalho
             ('BACKGROUND', (0, 1), (-1, -1), colors.white),
             ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
             ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 1), (-1, -1), font_size),  # Fonte menor no corpo
+            ('FONTSIZE', (0, 1), (-1, -1), font_size),
             ('TOPPADDING', (0, 1), (-1, -1), 6),
             ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
             *[('BACKGROUND', (0, i), (-1, i), HexColor('#f5f6fa')) for i in range(2, len(data), 2)],
