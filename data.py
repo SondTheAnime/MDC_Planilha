@@ -4,18 +4,23 @@ import streamlit as st
 @st.cache_data
 def get_initial_data():
     try:
+        # Acessar os secrets de forma mais direta
+        secrets_dict = st.secrets.to_dict()
+        
         dados_itens = {
-            "Descrição do Item": st.secrets.itens.descricoes,
-            "Custo Unitário (R$)": st.secrets.itens.custos,
-            "Quantidade Mensal": st.secrets.itens.quantidades,
-            "Margem de Lucro (%)": st.secrets.itens.margens
+            "Descrição do Item": secrets_dict["itens"]["descricoes"],
+            "Custo Unitário (R$)": secrets_dict["itens"]["custos"],
+            "Quantidade Mensal": secrets_dict["itens"]["quantidades"],
+            "Margem de Lucro (%)": secrets_dict["itens"]["margens"]
         }
+        
         dados_salarios = {
-            "cargos": st.secrets.salarios.cargos,
-            "valores": st.secrets.salarios.valores,
-            "quantidade": st.secrets.salarios.quantidade_funcionarios,
-            "impostos": st.secrets.salarios.impostos
+            "cargos": secrets_dict["salarios"]["cargos"],
+            "valores": secrets_dict["salarios"]["valores"],
+            "quantidade": secrets_dict["salarios"]["quantidade_funcionarios"],
+            "impostos": secrets_dict["salarios"]["impostos"]
         }
+        
     except Exception as e:
         st.error(f"Erro ao carregar dados: {str(e)}")
         raise e
