@@ -9,49 +9,63 @@ from reportlab.lib.styles import getSampleStyleSheet
 import tempfile
 from reportlab.lib.colors import HexColor
 import pytz
+from views import create_salary_df
 
-def show_export_options(df):
+def show_export_options(df, data):
     st.subheader("Exportar Dados")
-    col1, col2, col3 = st.columns(3)
     
-    with col1:
-        export_csv(df)
-    with col2:
-        export_excel(df)
-    with col3:
-        export_pdf(df)
+    tab1, tab2 = st.tabs(["📊 Dados Gerais", "💰 Salários"])
+    
+    with tab1:
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            export_csv(df, "orcamento")
+        with col2:
+            export_excel(df, "orcamento")
+        with col3:
+            export_pdf(df, "orcamento")
+    
+    with tab2:
+        df_salarios = create_salary_df(data)
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            export_csv(df_salarios, "salarios")
+        with col2:
+            export_excel(df_salarios, "salarios")
+        with col3:
+            export_pdf(df_salarios, "salarios")
 
-def export_csv(df):
+def export_csv(df, prefix):
     csv = df.to_csv(index=False).encode('utf-8')
     st.download_button(
         label="📥 Download CSV",
         data=csv,
-        file_name=f'orcamento_escolar_{datetime.now().strftime("%Y%m%d")}.csv',
+        file_name=f'{prefix}_{datetime.now().strftime("%Y%m%d")}.csv',
         mime='text/csv',
         help="Clique para baixar os dados em formato CSV"
     )
 
-def export_excel(df):
+def export_excel(df, prefix):
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df.to_excel(writer, index=False, sheet_name='Orçamento')
+        df.to_excel(writer, index=False, sheet_name='Dados')
     
     excel_data = output.getvalue()
     st.download_button(
         label="📥 Download Excel",
         data=excel_data,
-        file_name=f'orcamento_escolar_{datetime.now().strftime("%Y%m%d")}.xlsx',
+        file_name=f'{prefix}_{datetime.now().strftime("%Y%m%d")}.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         help="Clique para baixar os dados em formato Excel"
     )
 
-def export_pdf(df):
+def export_pdf(df, prefix):
     pdf_file = create_pdf(df)
     with open(pdf_file, "rb") as pdf:
         st.download_button(
             label="📥 Download PDF",
             data=pdf,
-            file_name=f'orcamento_escolar_{datetime.now().strftime("%Y%m%d")}.pdf',
+            file_name=f'{prefix}_{datetime.now().strftime("%Y%m%d")}.pdf',
             mime='application/pdf',
             help="Clique para baixar os dados em formato PDF"
         ) 

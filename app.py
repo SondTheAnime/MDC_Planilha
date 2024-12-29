@@ -31,7 +31,7 @@ def main():
         show_salary_analysis(df, data)
 
     with tab4:
-        show_export_options(df)
+        show_export_options(df, data)
 
     # Footer
     st.markdown("""
