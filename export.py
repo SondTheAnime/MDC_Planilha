@@ -74,7 +74,7 @@ def create_pdf(df, is_salary=False):
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
         doc = SimpleDocTemplate(
             tmp_file.name,
-            pagesize=landscape(A4),
+            pagesize=landscape((16.5*72, 11.7*72)),  # A3 em pontos (72 pontos = 1 polegada)
             rightMargin=10,
             leftMargin=10,
             topMargin=30,
@@ -124,19 +124,23 @@ def create_pdf(df, is_salary=False):
         
         if is_salary:
             col_widths = [
-                90,   # Cargo
-                75,   # Salário Base
+                100,  # Cargo
+                80,   # Salário Base
                 40,   # Quantidade
                 60,   # INSS
                 60,   # FGTS
-                60,   # IRPF
-                70,   # 13º
-                75,   # Total Encargos
-                85,   # Custo por Funcionário
-                85    # Custo Total Mensal
+                60,   # Acidente
+                60,   # Educação
+                60,   # DSR
+                60,   # 13º
+                60,   # Sistema S
+                60,   # Férias
+                80,   # Total Encargos
+                80,   # Custo por Funcionário
+                80    # Custo Total Mensal
             ]
-            font_size = 9
-            header_height = 30  # Altura maior para cabeçalhos com quebra de linha
+            font_size = 10  # Aumentar fonte
+            header_height = 35  # Aumentar altura do cabeçalho
         else:
             col_widths = [
                 200,  # Descrição do Item
