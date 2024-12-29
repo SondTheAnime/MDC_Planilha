@@ -58,7 +58,7 @@ def get_initial_data():
         ],
         "Custo Unitário (R$)": [7000.00, 800.00, 2500.00, 150.00, 400.00, 600.00, 250.00, 550.00, 150.00],
         "Quantidade Mensal": [1, 1, 1, 1, 1, 1, 1, 1, 1],
-        "Margem de Lucro (%)": [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "Margem de Lucro (%)": [30, 30, 30, 30, 30, 30, 30, 30, 30],
     }
 
 # Criar DataFrame e cálculos
