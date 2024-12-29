@@ -109,15 +109,15 @@ def create_pdf(df, is_salary=False):
         if is_salary:
             col_widths = [
                 120,  # Cargo
-                90,   # Salário Base
-                60,   # Quantidade
-                80,   # INSS
-                80,   # FGTS
-                80,   # IRPF
-                80,   # 13º
-                90,   # Total Encargos
-                90,   # Custo por Funcionário
-                90    # Custo Total Mensal
+                120,   # Salário Base
+                120,   # Quantidade
+                120,   # INSS
+                120,   # FGTS
+                120,   # IRPF
+                120,   # 13º
+                120,   # Total Encargos
+                120,   # Custo por Funcionário
+                120    # Custo Total Mensal
             ]
         else:
             col_widths = [
