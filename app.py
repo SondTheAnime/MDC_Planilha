@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime
 from config import setup_page, setup_style, show_header
 from data import get_initial_data, process_data
-from views import show_metrics, show_bar_chart, show_detailed_analysis
+from views import show_metrics, show_bar_chart, show_detailed_analysis, show_salary_analysis
 from export import show_export_options
 
 def main():
@@ -13,20 +13,24 @@ def main():
     data = get_initial_data()
     df = process_data(data)
 
-    tab1, tab2, tab3 = st.tabs([
+    tab1, tab2, tab3, tab4 = st.tabs([
         "📊 Visão Geral",
         "📈 Análise Detalhada",
+        "💰 Salários",
         "⚙️ Configurações"
     ])
 
     with tab1:
-        show_metrics(df)
+        show_metrics(df, data)
         show_bar_chart(df)
 
     with tab2:
-        show_detailed_analysis(df)
-
+        show_detailed_analysis(df, data)
+        
     with tab3:
+        show_salary_analysis(df, data)
+
+    with tab4:
         show_export_options(df)
 
     # Footer
