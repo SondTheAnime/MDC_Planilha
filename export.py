@@ -120,7 +120,7 @@ def create_pdf(df, is_salary=False):
         
         if is_salary:
             col_widths = [
-                85,   # Cargo
+                90,   # Cargo
                 75,   # Salário Base
                 40,   # Quantidade
                 60,   # INSS
@@ -137,8 +137,8 @@ def create_pdf(df, is_salary=False):
             col_widths = [
                 200,  # Descrição do Item
                 120,  # Custo Unitário
-                100,  # Quantidade Mensal
-                100,  # Margem de Lucro
+                120,  # Quantidade Mensal
+                120,  # Margem de Lucro
                 140,  # Valor Unitário Final
                 140   # Custo Mensal Total
             ]
