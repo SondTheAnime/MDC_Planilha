@@ -108,7 +108,7 @@ def create_pdf(df, is_salary=False):
         # Ajustar larguras baseado no tipo de relatório
         col_widths = [120] * len(df_formatted.columns)  # Largura padrão
         if not is_salary:
-            col_widths = [200, 120, 120, 120, 140, 140]
+            col_widths = [150, 120, 120, 120, 140, 140]
         
         table = Table(data, colWidths=col_widths, repeatRows=1)
         
