@@ -106,9 +106,28 @@ def create_pdf(df, is_salary=False):
         data = [df_formatted.columns.tolist()] + df_formatted.values.tolist()
         
         # Ajustar larguras baseado no tipo de relatório
-        col_widths = [120] * len(df_formatted.columns)  # Largura padrão
-        if not is_salary:
-            col_widths = [150, 120, 120, 120, 140, 140]
+        if is_salary:
+            col_widths = [
+                120,  # Cargo
+                90,   # Salário Base
+                60,   # Quantidade
+                80,   # INSS
+                80,   # FGTS
+                80,   # IRPF
+                80,   # 13º
+                90,   # Total Encargos
+                90,   # Custo por Funcionário
+                90    # Custo Total Mensal
+            ]
+        else:
+            col_widths = [
+                200,  # Descrição do Item
+                120,  # Custo Unitário
+                100,  # Quantidade Mensal
+                100,  # Margem de Lucro
+                140,  # Valor Unitário Final
+                140   # Custo Mensal Total
+            ]
         
         table = Table(data, colWidths=col_widths, repeatRows=1)
         
