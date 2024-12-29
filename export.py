@@ -89,6 +89,17 @@ def create_pdf(df, is_salary=False):
         
         title = 'Relatório de Salários' if is_salary else 'Orçamento Escolar MDC'
         elements.append(Paragraph(title, title_style))
+        
+        date_style = styles['Normal']
+        date_style.alignment = 1  # Centralizado
+        date_style.textColor = HexColor('#7f8c8d')
+        date_style.fontSize = 10
+        
+        tz_br = pytz.timezone('America/Sao_Paulo')
+        current_time = datetime.now(tz_br)
+        date_str = f"Gerado em {current_time.strftime('%d/%m/%Y às %H:%M:%S')}"
+        elements.append(Paragraph(date_str, date_style))
+        
         elements.append(Spacer(1, 20))
         
         # Formatar números e ajustar cabeçalhos
