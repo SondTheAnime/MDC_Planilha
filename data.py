@@ -42,7 +42,16 @@ def process_data(data):
     
     # Calcular impostos e total
     impostos = data["salarios"]["impostos"]
-    total_impostos = impostos["inss"] + impostos["fgts"] + impostos["IRPF"] + impostos["decimo"]
+    total_impostos = (
+        impostos.get("inss", 0) + 
+        impostos.get("fgts", 0) + 
+        impostos.get("acidente", 0) + 
+        impostos.get("educacao", 0) + 
+        impostos.get("dsr", 0) + 
+        impostos.get("decimo", 0) + 
+        impostos.get("sistema_s", 0) + 
+        impostos.get("ferias", 0)
+    )
     
     # Calcular custo total dos salários
     custo_total_salarios = sum(
