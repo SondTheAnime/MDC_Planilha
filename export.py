@@ -75,8 +75,8 @@ def create_pdf(df, is_salary=False):
         doc = SimpleDocTemplate(
             tmp_file.name,
             pagesize=landscape(A4),
-            rightMargin=30,
-            leftMargin=30,
+            rightMargin=20,
+            leftMargin=20,
             topMargin=40,
             bottomMargin=30
         )
@@ -108,16 +108,16 @@ def create_pdf(df, is_salary=False):
         # Ajustar larguras baseado no tipo de relatório
         if is_salary:
             col_widths = [
-                120,  # Cargo
-                120,   # Salário Base
-                120,   # Quantidade
-                120,   # INSS
-                120,   # FGTS
-                120,   # IRPF
-                120,   # 13º
-                120,   # Total Encargos
-                120,   # Custo por Funcionário
-                120    # Custo Total Mensal
+                85,   # Cargo
+                85,   # Salário Base
+                60,   # Quantidade
+                75,   # INSS
+                75,   # FGTS
+                75,   # IRPF
+                75,   # 13º
+                85,   # Total Encargos
+                85,   # Custo por Funcionário
+                85    # Custo Total Mensal
             ]
         else:
             col_widths = [
