@@ -75,8 +75,8 @@ def create_pdf(df, is_salary=False):
         doc = SimpleDocTemplate(
             tmp_file.name,
             pagesize=landscape(A4),
-            rightMargin=20,
-            leftMargin=20,
+            rightMargin=50,
+            leftMargin=50,
             topMargin=40,
             bottomMargin=30
         )
