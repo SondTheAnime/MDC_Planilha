@@ -108,16 +108,16 @@ def create_pdf(df, is_salary=False):
         # Ajustar larguras baseado no tipo de relatório
         if is_salary:
             col_widths = [
-                85,   # Cargo
-                85,   # Salário Base
-                60,   # Quantidade
+                100,   # Cargo
+                100,   # Salário Base
+                85,   # Quantidade
                 75,   # INSS
                 75,   # FGTS
                 75,   # IRPF
-                75,   # 13º
-                85,   # Total Encargos
-                85,   # Custo por Funcionário
-                85    # Custo Total Mensal
+                100,   # 13º
+                120,   # Total Encargos
+                120,   # Custo por Funcionário
+                120    # Custo Total Mensal
             ]
         else:
             col_widths = [
