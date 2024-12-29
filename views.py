@@ -95,32 +95,7 @@ def show_cost_analysis(df):
 def show_salary_analysis(df, data):
     st.subheader("Análise de Salários por Cargo")
     
-    # Criar DataFrame de salários com impostos
-    df_salarios = pd.DataFrame({
-        "Cargo": data["salarios"]["cargos"],
-        "Salário Base (R$)": data["salarios"]["valores"],
-        "Quantidade": data["salarios"]["quantidade"]
-    })
-    
-    # Calcular impostos e encargos
-    impostos = data["salarios"]["impostos"]
-    
-    df_salarios["INSS (R$)"] = df_salarios["Salário Base (R$)"] * impostos["inss"]
-    df_salarios["FGTS (R$)"] = df_salarios["Salário Base (R$)"] * impostos["fgts"]
-    df_salarios["IRPF (R$)"] = df_salarios["Salário Base (R$)"] * impostos["IRPF"]
-    df_salarios["Provisão 13º (R$)"] = df_salarios["Salário Base (R$)"] * impostos["decimo"]
-    
-    # Total de encargos por funcionário
-    df_salarios["Total Encargos (R$)"] = (
-        df_salarios["INSS (R$)"] + 
-        df_salarios["FGTS (R$)"] + 
-        df_salarios["IRPF (R$)"] + 
-        df_salarios["Provisão 13º (R$)"]
-    )
-    
-    # Calcular custo total por funcionário
-    df_salarios["Custo por Funcionário (R$)"] = df_salarios["Salário Base (R$)"] + df_salarios["Total Encargos (R$)"]
-    df_salarios["Custo Total Mensal (R$)"] = df_salarios["Custo por Funcionário (R$)"] * df_salarios["Quantidade"]
+    df_salarios = create_salary_df(data)
     
     # Métricas principais
     total_salarios_base = (df_salarios["Salário Base (R$)"] * df_salarios["Quantidade"]).sum()
@@ -158,8 +133,12 @@ def show_salary_analysis(df, data):
                 'Salário Base (R$)': 'R${:,.2f}',
                 'INSS (R$)': 'R${:,.2f}',
                 'FGTS (R$)': 'R${:,.2f}',
-                'IRPF (R$)': 'R${:,.2f}',
-                'Provisão 13º (R$)': 'R${:,.2f}',
+                'Acidente (R$)': 'R${:,.2f}',
+                'Educação (R$)': 'R${:,.2f}',
+                'DSR (R$)': 'R${:,.2f}',
+                '13º (R$)': 'R${:,.2f}',
+                'Sistema S (R$)': 'R${:,.2f}',
+                'Férias (R$)': 'R${:,.2f}',
                 'Total Encargos (R$)': 'R${:,.2f}',
                 'Custo por Funcionário (R$)': 'R${:,.2f}',
                 'Custo Total Mensal (R$)': 'R${:,.2f}'
@@ -181,15 +160,20 @@ def show_salary_analysis(df, data):
         )
         st.plotly_chart(fig, use_container_width=True)
     
-    # Gráfico de barras comparativo
+    # Gráfico de barras detalhado com todos os encargos
+    encargos_cols = [
+        'INSS (R$)', 'FGTS (R$)', 'Acidente (R$)', 'Educação (R$)',
+        'DSR (R$)', '13º (R$)', 'Sistema S (R$)', 'Férias (R$)'
+    ]
+    
     st.plotly_chart(
         px.bar(
             df_salarios,
             x='Cargo',
-            y=['Salário Base (R$)', 'Total Encargos (R$)'],
-            title='Comparativo: Salário Base vs Encargos por Cargo',
-            barmode='group'
-        ).update_layout(height=400),
+            y=['Salário Base (R$)'] + encargos_cols,
+            title='Detalhamento de Salários e Encargos por Cargo',
+            barmode='stack'
+        ).update_layout(height=500),
         use_container_width=True
     )
 
