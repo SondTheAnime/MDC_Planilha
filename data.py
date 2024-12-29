@@ -36,34 +36,18 @@ import os
 
 @st.cache_data
 def get_initial_data():
-    try:
-        dados_itens = {
-            "Descrição do Item": st.secrets.itens.descricoes,
-            "Custo Unitário (R$)": st.secrets.itens.custos,
-            "Quantidade Mensal": st.secrets.itens.quantidades,
-            "Margem de Lucro (%)": st.secrets.itens.margens
-        }
-        dados_salarios = {
-            "cargos": st.secrets.salarios.cargos,
-            "valores": st.secrets.salarios.valores,
-            "quantidade": st.secrets.salarios.quantidade_funcionarios,
-            "impostos": st.secrets.salarios.impostos
-        }
-    except:
-        print("Usando dados de exemplo para teste local")
-    #     dados_itens = {
-    #         "Descrição do Item": DADOS_EXEMPLO["itens"]["descricoes"],
-    #         "Custo Unitário (R$)": DADOS_EXEMPLO["itens"]["custos"],
-    #         "Quantidade Mensal": DADOS_EXEMPLO["itens"]["quantidades"],
-    #         "Margem de Lucro (%)": DADOS_EXEMPLO["itens"]["margens"]
-    #     }
-    #     dados_salarios = {
-    #         "cargos": DADOS_EXEMPLO["salarios"]["cargos"],
-    #         "valores": DADOS_EXEMPLO["salarios"]["valores"],
-    #         "quantidade": DADOS_EXEMPLO["salarios"]["quantidade_funcionarios"],
-    #         "impostos": DADOS_EXEMPLO["salarios"]["impostos"]
-    #     }
-    
+    dados_itens = {
+        "Descrição do Item": st.secrets.itens.descricoes,
+        "Custo Unitário (R$)": st.secrets.itens.custos,
+        "Quantidade Mensal": st.secrets.itens.quantidades,
+        "Margem de Lucro (%)": st.secrets.itens.margens
+    }
+    dados_salarios = {
+        "cargos": st.secrets.salarios.cargos,
+        "valores": st.secrets.salarios.valores,
+        "quantidade": st.secrets.salarios.quantidade_funcionarios,
+        "impostos": st.secrets.salarios.impostos
+    }
     return {
         "itens": dados_itens,
         "salarios": dados_salarios
