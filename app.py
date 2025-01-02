@@ -36,7 +36,7 @@ def main():
     # Footer
     st.markdown("""
         <footer>
-            <p>
+            <p style='text-align: center; color: #888888;'>
                 <span style='font-size: 1.2rem;'>🚀</span><br>
                 Desenvolvido por Sond<br>
                 <small>Última atualização: {}</small>
