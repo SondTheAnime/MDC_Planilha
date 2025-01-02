@@ -35,10 +35,13 @@ def main():
 
     # Footer
     st.markdown("""
-        ---
-        <p style='text-align: center; color: #888888;'>
-            Desenvolvido por Sond | Última atualização: {}
-        </p>
+        <footer>
+            <p>
+                <span style='font-size: 1.2rem;'>🚀</span><br>
+                Desenvolvido por Sond<br>
+                <small>Última atualização: {}</small>
+            </p>
+        </footer>
     """.format(datetime.now().strftime("%d/%m/%Y")), unsafe_allow_html=True)
 
 if __name__ == "__main__":
