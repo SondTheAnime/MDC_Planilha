@@ -85,7 +85,7 @@ def create_pdf(df, is_salary=False):
         styles = getSampleStyleSheet()
         title_style = styles['Title']
         title_style.textColor = HexColor('#2c3e50')
-        title_style.fontSize = 20
+        title_style.fontSize = 28
         
         title = 'Relatório de Salários' if is_salary else 'Orçamento Escolar MDC'
         elements.append(Paragraph(title, title_style))
@@ -93,7 +93,7 @@ def create_pdf(df, is_salary=False):
         date_style = styles['Normal']
         date_style.alignment = 1  # Centralizado
         date_style.textColor = HexColor('#7f8c8d')
-        date_style.fontSize = 10
+        date_style.fontSize = 14
         
         tz_br = pytz.timezone('America/Sao_Paulo')
         current_time = datetime.now(tz_br)
@@ -136,19 +136,19 @@ def create_pdf(df, is_salary=False):
         if is_salary:
             col_widths = [
                 150,  # Cargo
-                110,  # Salário Base
+                120,  # Salário Base
                 60,   # Quantidade
-                90,   # INSS
-                90,   # FGTS
-                90,   # Acidente
-                90,   # Educação
-                90,   # DSR
-                90,   # 13º
-                90,   # Sistema S
-                90,   # Férias
-                110,  # Total Encargos
-                110,  # Custo por Funcionário
-                110   # Custo Total Mensal
+                110,   # INSS
+                110,   # FGTS
+                110,   # Acidente
+                110,   # Educação
+                110,   # DSR
+                110,   # 13º
+                110,   # Sistema S
+                110,   # Férias
+                150,  # Total Encargos
+                150,  # Custo por Funcionário
+                150   # Custo Total Mensal
             ]
             font_size = 14  # Fonte maior
             header_height = 50
