@@ -150,8 +150,8 @@ def create_pdf(df, is_salary=False):
                 100,  # Custo por Funcionário
                 100   # Custo Total Mensal
             ]
-            font_size = 12  # Aumentar fonte
-            header_height = 40
+            font_size = 14  # Fonte maior
+            header_height = 50
         else:
             col_widths = [
                 300,  # Descrição do Item
@@ -161,8 +161,8 @@ def create_pdf(df, is_salary=False):
                 180,  # Valor Unitário Final
                 180   # Custo Mensal Total
             ]
-            font_size = 12
-            header_height = 30
+            font_size = 14
+            header_height = 40
         
         table = Table(data, colWidths=col_widths, repeatRows=1)
         
@@ -173,7 +173,7 @@ def create_pdf(df, is_salary=False):
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
             ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), font_size + 2),
+            ('FONTSIZE', (0, 0), (-1, 0), font_size + 4),  # Cabeçalho ainda maior
             ('BOTTOMPADDING', (0, 0), (-1, 0), header_height/2),
             ('TOPPADDING', (0, 0), (-1, 0), header_height/2),
             ('BACKGROUND', (0, 1), (-1, -1), colors.white),
@@ -181,10 +181,10 @@ def create_pdf(df, is_salary=False):
             ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
             ('FONTSIZE', (0, 1), (-1, -1), font_size),
-            ('TOPPADDING', (0, 1), (-1, -1), 8),
-            ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
+            ('TOPPADDING', (0, 1), (-1, -1), 12),  # Mais espaço entre linhas
+            ('BOTTOMPADDING', (0, 1), (-1, -1), 12),  # Mais espaço entre linhas
             *[('BACKGROUND', (0, i), (-1, i), HexColor('#f5f6fa')) for i in range(2, len(data), 2)],
-            ('GRID', (0, 0), (-1, -1), 0.5, HexColor('#bdc3c7')),
+            ('GRID', (0, 0), (-1, -1), 1, HexColor('#bdc3c7')),  # Linha da grade mais grossa
             ('ALIGN', (0, 0), (0, -1), 'LEFT'),
             ('ALIGN', (1, 1), (-1, -1), 'RIGHT'),
         ]))
