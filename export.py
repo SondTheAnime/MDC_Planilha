@@ -135,31 +135,31 @@ def create_pdf(df, is_salary=False):
         
         if is_salary:
             col_widths = [
-                200,  # Cargo
-                140,  # Salário Base
-                80,   # Quantidade
-                120,  # INSS
-                120,  # FGTS
-                120,  # Acidente
-                120,  # Educação
-                120,  # DSR
-                120,  # 13º
-                120,  # Sistema S
-                120,  # Férias
-                140,  # Total Encargos
-                140,  # Custo por Funcionário
-                140   # Custo Total Mensal
+                150,  # Cargo
+                110,  # Salário Base
+                60,   # Quantidade
+                90,   # INSS
+                90,   # FGTS
+                90,   # Acidente
+                90,   # Educação
+                90,   # DSR
+                90,   # 13º
+                90,   # Sistema S
+                90,   # Férias
+                110,  # Total Encargos
+                110,  # Custo por Funcionário
+                110   # Custo Total Mensal
             ]
             font_size = 14  # Fonte maior
             header_height = 50
         else:
             col_widths = [
-                500,  # Descrição do Item
-                250,  # Custo Unitário
-                250,  # Quantidade Mensal
-                250,  # Margem de Lucro
-                280,  # Valor Unitário Final
-                280   # Custo Mensal Total
+                310,  # Descrição do Item
+                170,  # Custo Unitário
+                170,  # Quantidade Mensal
+                170,  # Margem de Lucro
+                190,  # Valor Unitário Final
+                190   # Custo Mensal Total
             ]
             font_size = 14
             header_height = 40
