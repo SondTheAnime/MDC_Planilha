@@ -154,12 +154,12 @@ def create_pdf(df, is_salary=False):
             header_height = 50
         else:
             col_widths = [
-                310,  # Descrição do Item
+                290,  # Descrição do Item
                 170,  # Custo Unitário
-                170,  # Quantidade Mensal
-                170,  # Margem de Lucro
-                190,  # Valor Unitário Final
-                190   # Custo Mensal Total
+                190,  # Quantidade Mensal
+                190,  # Margem de Lucro
+                210,  # Valor Unitário Final
+                210   # Custo Mensal Total
             ]
             font_size = 14
             header_height = 40
