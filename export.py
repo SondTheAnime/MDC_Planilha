@@ -74,11 +74,11 @@ def create_pdf(df, is_salary=False):
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
         doc = SimpleDocTemplate(
             tmp_file.name,
-            pagesize=landscape((16.5*72, 11.7*72)),  # A3 em pontos (72 pontos = 1 polegada)
-            rightMargin=10,
-            leftMargin=10,
-            topMargin=30,
-            bottomMargin=20
+            pagesize=landscape((23.4*72, 16.5*72)),  # A2 em pontos
+            rightMargin=30,
+            leftMargin=30,
+            topMargin=40,
+            bottomMargin=30
         )
         elements = []
         
@@ -135,52 +135,54 @@ def create_pdf(df, is_salary=False):
         
         if is_salary:
             col_widths = [
-                100,  # Cargo
-                80,   # Salário Base
-                40,   # Quantidade
-                60,   # INSS
-                60,   # FGTS
-                60,   # Acidente
-                60,   # Educação
-                60,   # DSR
-                60,   # 13º
-                60,   # Sistema S
-                60,   # Férias
-                80,   # Total Encargos
-                80,   # Custo por Funcionário
-                80    # Custo Total Mensal
+                140,  # Cargo
+                100,  # Salário Base
+                50,   # Quantidade
+                80,   # INSS
+                80,   # FGTS
+                80,   # Acidente
+                80,   # Educação
+                80,   # DSR
+                80,   # 13º
+                80,   # Sistema S
+                80,   # Férias
+                100,  # Total Encargos
+                100,  # Custo por Funcionário
+                100   # Custo Total Mensal
             ]
-            font_size = 10  # Aumentar fonte
-            header_height = 35  # Aumentar altura do cabeçalho
+            font_size = 12  # Aumentar fonte
+            header_height = 40
         else:
             col_widths = [
-                200,  # Descrição do Item
-                120,  # Custo Unitário
-                120,  # Quantidade Mensal
-                120,  # Margem de Lucro
-                140,  # Valor Unitário Final
-                140   # Custo Mensal Total
+                300,  # Descrição do Item
+                160,  # Custo Unitário
+                160,  # Quantidade Mensal
+                160,  # Margem de Lucro
+                180,  # Valor Unitário Final
+                180   # Custo Mensal Total
             ]
-            font_size = 10
-            header_height = 20
+            font_size = 12
+            header_height = 30
         
         table = Table(data, colWidths=col_widths, repeatRows=1)
+        
+        elements.append(Spacer(1, 50))
         
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), HexColor('#2c3e50')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
             ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), font_size + 1),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), header_height/2),  # Ajuste do padding do cabeçalho
-            ('TOPPADDING', (0, 0), (-1, 0), header_height/2),     # Ajuste do padding do cabeçalho
+            ('FONTSIZE', (0, 0), (-1, 0), font_size + 2),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), header_height/2),
+            ('TOPPADDING', (0, 0), (-1, 0), header_height/2),
             ('BACKGROUND', (0, 1), (-1, -1), colors.white),
             ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
             ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
             ('FONTSIZE', (0, 1), (-1, -1), font_size),
-            ('TOPPADDING', (0, 1), (-1, -1), 6),
-            ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
+            ('TOPPADDING', (0, 1), (-1, -1), 8),
+            ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
             *[('BACKGROUND', (0, i), (-1, i), HexColor('#f5f6fa')) for i in range(2, len(data), 2)],
             ('GRID', (0, 0), (-1, -1), 0.5, HexColor('#bdc3c7')),
             ('ALIGN', (0, 0), (0, -1), 'LEFT'),
