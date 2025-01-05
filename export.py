@@ -118,9 +118,9 @@ def create_pdf(df, is_salary=False):
                 '13º\n(R$)',
                 'Sist.S\n(R$)',
                 'Férias\n(R$)',
-                'Total Encargos\n(R$)',
-                'Custo por Funcionário\n(R$)',
-                'Custo Total Mensal\n(R$)'
+                'Total\nEncargos (R$)',
+                'Custo por\nFuncionário (R$)',
+                'Custo Total\nMensal (R$)'
             ]
             for col in df_formatted.columns:
                 if "R$" in col:
