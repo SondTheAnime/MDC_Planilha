@@ -173,9 +173,10 @@ def create_pdf(df, is_salary=False):
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
             ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), font_size + 4),  # Cabeçalho ainda maior
-            ('BOTTOMPADDING', (0, 0), (-1, 0), header_height/2),
-            ('TOPPADDING', (0, 0), (-1, 0), header_height/2),
+            ('FONTSIZE', (0, 0), (-1, 0), font_size + 4),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 25),
+            ('TOPPADDING', (0, 0), (-1, 0), 25),
+            ('LINEHEIGHT', (0, 0), (-1, 0), 1.5),
             ('BACKGROUND', (0, 1), (-1, -1), colors.white),
             ('TEXTCOLOR', (0, 1), (-1, -1), HexColor('#2c3e50')),
             ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
