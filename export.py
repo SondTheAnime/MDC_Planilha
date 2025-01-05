@@ -108,19 +108,19 @@ def create_pdf(df, is_salary=False):
             # Renomear colunas com quebras de linha
             df_formatted.columns = [
                 'Cargo',
-                'Salário\nBase (R$)',
+                'Salário Base (R$)',
                 'Qtd.',
-                'INSS\n(R$)',
-                'FGTS\n(R$)',
-                'Acid.\n(R$)',
-                'Educ.\n(R$)',
-                'DSR\n(R$)',
-                '13º\n(R$)',
-                'Sist.S\n(R$)',
-                'Férias\n(R$)',
-                'Total\nEncargos (R$)',
-                'Custo por\nFuncionário (R$)',
-                'Custo Total\nMensal (R$)'
+                'INSS (R$)',
+                'FGTS (R$)',
+                'Acid. (R$)',
+                'Educ. (R$)',
+                'DSR (R$)',
+                '13º (R$)',
+                'Sist.S (R$)',
+                'Férias (R$)',
+                'Total Encargos (R$)',
+                'Custo por Funcionário (R$)',
+                'Custo Total Mensal (R$)'
             ]
             for col in df_formatted.columns:
                 if "R$" in col:
